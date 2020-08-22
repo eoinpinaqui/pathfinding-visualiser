@@ -26,3 +26,12 @@ def clear_grid(grid):
     for row in grid:
         for node in row:
             node.reset()
+
+
+def clear_grid_keep_barriers(grid):
+    for row in grid:
+        for node in row:
+            if node.is_end() or node.is_start() or node.is_barrier():
+                continue
+            else:
+                node.reset()

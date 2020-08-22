@@ -2,7 +2,7 @@
 import pygame
 from constants import WIDTH, TOTAL_ROWS, WHITE
 import grid
-from algorithms import astar
+from algorithms import astar, dijkstras, dfs
 
 # Setup
 window = pygame.display.set_mode((WIDTH, WIDTH))
@@ -49,9 +49,7 @@ def main(win, width):
                 node = node_grid[row][col]
                 if clear:
                     clear = False
-                    start = None
-                    end = None
-                    grid.clear_grid(node_grid)
+                    grid.clear_grid_keep_barriers(node_grid)
                 if not start and node != end:
                     start = node
                     start.make_start()
@@ -63,9 +61,7 @@ def main(win, width):
             elif pygame.mouse.get_pressed()[2]:  # Right mouse button
                 if clear:
                     clear = False
-                    start = None
-                    end = None
-                    grid.clear_grid(node_grid)
+                    grid.clear_grid_keep_barriers(node_grid)
                 pos = pygame.mouse.get_pos()
                 row, col = get_clicked_pos(pos, total_rows, WIDTH)
                 node = node_grid[row][col]
@@ -77,9 +73,7 @@ def main(win, width):
             if event.type == pygame.KEYDOWN:
                 if clear:
                     clear = False
-                    start = None
-                    end = None
-                    grid.clear_grid(node_grid)
+                    grid.clear_grid_keep_barriers(node_grid)
                 if not started:
                     for row in node_grid:
                         for node in row:
@@ -90,6 +84,14 @@ def main(win, width):
                         grid.clear_grid(node_grid)
                     if event.key == pygame.K_1:
                         astar.algorithm(lambda: draw(win, node_grid, total_rows, width), node_grid, start, end)
+                        started = False
+                        clear = True
+                    if event.key == pygame.K_2:
+                        dijkstras.algorithm(lambda: draw(win, node_grid, total_rows, width), node_grid, start, end)
+                        started = False
+                        clear = True
+                    if event.key == pygame.K_3:
+                        dfs.algorithm(lambda: draw(win, node_grid, total_rows, width), node_grid, start, end)
                         started = False
                         clear = True
 
